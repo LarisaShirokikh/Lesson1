@@ -11,7 +11,7 @@ const corsMiddleware = (0, cors_1.default)();
 app.use(corsMiddleware);
 const jsonBodyMiddleware = body_parser_1.default.json();
 app.use(jsonBodyMiddleware);
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const videos = [
     { id: 1, title: 'About JS - 01', author: 'it-incubator.eu' },
     { id: 2, title: 'About JS - 02', author: 'it-incubator.eu' },
@@ -19,13 +19,21 @@ const videos = [
     { id: 4, title: 'About JS - 04', author: 'it-incubator.eu' },
     { id: 5, title: 'About JS - 05', author: 'it-incubator.eu' },
 ];
-app.get('/', (req, res) => {
-    debugger;
+app.use((0, cors_1.default)());
+app.get('/', (req, res) => { });
+app.get('/', (req, res) => { });
+app.get('/videos', (req, res) => {
     res.send(videos);
 });
-app.get('/', (req, res) => { });
-app.get('/videos', (req, res) => { });
-app.post('/videos', (req, res) => { });
+app.post('/videos', (req, res) => {
+    const newVideo = {
+        id: +(new Date()),
+        title: req.body.title,
+        author: 'it-incubator.eu'
+    };
+    videos.push(newVideo);
+    res.send(newVideo);
+});
 app.get('/videos/:videoId', (req, res) => {
     const id = +req.params.videoId;
     // FIND VIDEO AND RETURN IT
